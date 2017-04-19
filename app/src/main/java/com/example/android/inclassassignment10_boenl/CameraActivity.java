@@ -19,12 +19,15 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static android.R.attr.data;
 
 
 public class CameraActivity extends AppCompatActivity {
@@ -36,12 +39,13 @@ public class CameraActivity extends AppCompatActivity {
     private File photoFile;
     private StorageReference mStorageRef;
     private Uri fileToUpload;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
         imageView = (ImageView) findViewById(R.id.image);
-        mStorageRef= FirebaseStorage.getInstance().getReference();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
     }
 
     public void takePhoto(View view) {
@@ -91,70 +95,45 @@ public class CameraActivity extends AppCompatActivity {
             return;
 
         if (requestCode == REQUEST_TAKE_PHOTO) {
-            try {
-                decodeUri(Uri.parse(photoFile.toURI().toString()));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+
+            fileToUpload = Uri.parse(photoFile.toURI().toString());
+
         } else if (requestCode == REQUEST_PICK_PHOTO) {
-            try {
-                decodeUri(data.getData());
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+
+            fileToUpload = data.getData();
+
+        }
+        Picasso.with(this)
+                .load(fileToUpload)
+                .resize(imageView.getWidth(), imageView.getHeight())
+                .centerInside()
+                .into(imageView);
+    }
+
+
+    public void upload(View v) {
+        if (fileToUpload != null) {
+            StorageReference uploadRef = mStorageRef.child("images/upload.jpg");
+
+            uploadRef.putFile(fileToUpload)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Toast.makeText(CameraActivity.this, "Uploaded Successfully!", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            Toast.makeText(CameraActivity.this, "Fail to Upload!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+        }else{ Toast.makeText(CameraActivity.this, "No photo is selected!", Toast.LENGTH_SHORT).show();
+
+
         }
     }
-
-    public void decodeUri(Uri uri) throws FileNotFoundException {
-
-        // Get the dimensions of the View
-        int targetW = imageView.getWidth();
-        int targetH = imageView.getHeight();
-
-        // Get the dimensions of the bitmap
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        // I just want to know the dimension, don't pass me the pixels yet!
-        bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeStream(getContentResolver().openInputStream(uri), null, bmOptions);
-
-        int photoW = bmOptions.outWidth;
-        int photoH = bmOptions.outHeight;
-
-        // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
-
-        // Decode the image file into a Bitmap sized to fill the View
-        bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = scaleFactor;
-
-        Bitmap image = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri), null, bmOptions);
-        imageView.setImageBitmap(image);
-    }
-
-    public void upload(View v){
-
-        StorageReference uploadRef = mStorageRef.child("images/upload.jpg");
-
-        uploadRef.putFile(fileToUpload)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // Get a URL to the uploaded content
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle unsuccessful uploads
-                        // ...
-                    }
-                });
-
-        Toast.makeText(CameraActivity.this,"Uploaded Successfully!", Toast.LENGTH_SHORT).show();
-
-
-    }
 }
-
 
 

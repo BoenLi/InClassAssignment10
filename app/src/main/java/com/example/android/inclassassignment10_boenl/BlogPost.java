@@ -19,6 +19,7 @@ public class BlogPost {
     public BlogPost(String title,String body,String time) {
         this.title=title;
         this.body=body;
+        this.time=time;
 
     }
     public String getTitle() {
@@ -44,7 +45,7 @@ public class BlogPost {
     public void setTime(String time) {
         this.time = time;
     }
-private String toReadableTime(){
+public String toReadableTime(){
 
     long postTime=Long.valueOf(time);
     Calendar calendar=Calendar.getInstance();
