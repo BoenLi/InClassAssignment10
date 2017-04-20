@@ -1,11 +1,9 @@
 package com.example.android.inclassassignment10_boenl;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,8 +12,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import org.w3c.dom.Comment;
 
 import java.util.ArrayList;
 
@@ -36,7 +32,6 @@ public class ListActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
         postRef = database.getReference("post");
-        postsRef = database.getReference("posts");
         posts = new ArrayList<>();
         //display = (TextView) findViewById(R.id.display_status);
 
@@ -51,9 +46,9 @@ public class ListActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new MyAdapter(posts);
+        mAdapter = new MyAdapter(posts, this);
         mRecyclerView.setAdapter(mAdapter);
-        postsRef.addChildEventListener(new ChildEventListener() {
+        postRef.addChildEventListener(new ChildEventListener() {
             @Override
 
             public void onChildAdded(DataSnapshot dataSnapshot,String s){

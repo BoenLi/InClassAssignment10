@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.inclassassignment10_boenl">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -23,15 +23,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CameraActivity"
-            android:label="Camera"/>
-        <activity android:name=".ObjectActivity"
-            android:label="BlogPost Object"/>
-        <activity android:name=".ListActivity"
-            android:label="Read BlogPosts"/>
-        <activity android:name=".StorageActivity"
-          android:label="Load Images"
-           />
+        <activity
+            android:name=".CameraActivity"
+            android:label="Camera" />
+        <activity
+            android:name=".ObjectActivity"
+            android:label="BlogPost Object" />
+        <activity
+            android:name=".ListActivity"
+            android:label="Read BlogPosts" />
+        <activity
+            android:name=".StorageActivity"
+            android:label="Load Images" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -40,9 +43,14 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+                android:resource="@xml/file_paths" />
         </provider>
 
+        <activity
+            android:name=".DetailActivity"
+            android:label="@string/detail_name">
+
+        </activity>
     </application>
 
 </manifest>

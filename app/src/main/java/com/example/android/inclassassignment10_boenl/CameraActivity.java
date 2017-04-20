@@ -1,8 +1,6 @@
 package com.example.android.inclassassignment10_boenl;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -22,12 +20,9 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import static android.R.attr.data;
 
 
 public class CameraActivity extends AppCompatActivity {
@@ -129,7 +124,8 @@ public class CameraActivity extends AppCompatActivity {
                         }
                     });
 
-        }else{ Toast.makeText(CameraActivity.this, "No photo is selected!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(CameraActivity.this, "No photo is selected!", Toast.LENGTH_SHORT).show();
 
 
         }
